@@ -496,10 +496,24 @@ export default function AdminDashboard() {
                       <CardDescription>{report.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <Button className="w-full" variant="outline">
-                        <Download className="w-4 h-4 mr-2" />
-                        Download Report
-                      </Button>
+                      <div className="flex space-x-2">
+                        <Button 
+                          className="flex-1" 
+                          variant="outline"
+                          onClick={() => window.open(`/api/reports?type=${report.title.toLowerCase().replace(' ', '_')}&format=json`, '_blank')}
+                        >
+                          <Download className="w-4 h-4 mr-2" />
+                          JSON
+                        </Button>
+                        <Button 
+                          className="flex-1" 
+                          variant="outline"
+                          onClick={() => window.open(`/api/reports?type=${report.title.toLowerCase().replace(' ', '_')}&format=csv`, '_blank')}
+                        >
+                          <Download className="w-4 h-4 mr-2" />
+                          CSV
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 )
