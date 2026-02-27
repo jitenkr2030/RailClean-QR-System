@@ -1,141 +1,294 @@
-# 🚀 Welcome to Z.ai Code Scaffold
+# 🚆 RailClean QR System
 
-A modern, production-ready web application scaffold powered by cutting-edge technologies, designed to accelerate your development with [Z.ai](https://chat.z.ai)'s AI-powered coding assistance.
+A comprehensive QR-based monitoring solution for Indian Railways that tracks train coach cleanliness, food quality, and platform cleanliness in real-time.
 
-## ✨ Technology Stack
+## 📋 Overview
 
-This scaffold provides a robust foundation built with:
+RailClean QR System is designed for Indian Railways, contractors, and private station operators to monitor and maintain hygiene standards across three key areas:
 
-### 🎯 Core Framework
-- **⚡ Next.js 16** - The React framework for production with App Router
-- **📘 TypeScript 5** - Type-safe JavaScript for better developer experience
-- **🎨 Tailwind CSS 4** - Utility-first CSS framework for rapid UI development
+- 🚆 **Coach Cleanliness** - Train coach hygiene and maintenance
+- 🍱 **Food Quality** - Pantry and catering service quality  
+- 🚉 **Platform Cleanliness** - Station platform hygiene standards
 
-### 🧩 UI Components & Styling
-- **🧩 shadcn/ui** - High-quality, accessible components built on Radix UI
-- **🎯 Lucide React** - Beautiful & consistent icon library
-- **🌈 Framer Motion** - Production-ready motion library for React
-- **🎨 Next Themes** - Perfect dark mode in 2 lines of code
+## ✨ Key Features
 
-### 📋 Forms & Validation
-- **🎣 React Hook Form** - Performant forms with easy validation
-- **✅ Zod** - TypeScript-first schema validation
+### 👥 **Multi-User System**
+- **Passengers**: Report issues via QR scan (no login required)
+- **Staff**: Manage tasks and upload completion photos
+- **Admin**: Comprehensive dashboard with analytics and reports
 
-### 🔄 State Management & Data Fetching
-- **🐻 Zustand** - Simple, scalable state management
-- **🔄 TanStack Query** - Powerful data synchronization for React
-- **🌐 Fetch** - Promise-based HTTP request
+### 🔄 **Smart Workflow**
+1. **Passenger scans QR** → Selects issue type → Uploads photo → Submits in 10 seconds
+2. **System auto-assigns** task to relevant staff based on location
+3. **Staff receives notification** → Starts work → Uploads before/after photos
+4. **Admin monitors** real-time progress and generates reports
 
-### 🗄️ Database & Backend
-- **🗄️ Prisma** - Next-generation TypeScript ORM
-- **🔐 NextAuth.js** - Complete open-source authentication solution
+### 📊 **Real-Time Analytics**
+- Live cleanliness scores
+- SLA compliance monitoring
+- Staff performance tracking
+- Customer satisfaction metrics
+- Repeat issue detection
 
-### 🎨 Advanced UI Features
-- **📊 TanStack Table** - Headless UI for building tables and datagrids
-- **🖱️ DND Kit** - Modern drag and drop toolkit for React
-- **📊 Recharts** - Redefined chart library built with React and D3
-- **🖼️ Sharp** - High performance image processing
+## 🏗️ Technical Architecture
 
-### 🌍 Internationalization & Utilities
-- **🌍 Next Intl** - Internationalization library for Next.js
-- **📅 Date-fns** - Modern JavaScript date utility library
-- **🪝 ReactUse** - Collection of essential React hooks for modern development
+### **Frontend**
+- **Next.js 16** with App Router
+- **TypeScript** for type safety
+- **Tailwind CSS** for responsive styling
+- **shadcn/ui** component library
+- **Lucide React** icons
 
-## 🎯 Why This Scaffold?
+### **Backend**
+- **Prisma ORM** with SQLite database
+- **RESTful APIs** for all operations
+- **QR code generation** with qrcode library
+- **File upload** support for photos
 
-- **🏎️ Fast Development** - Pre-configured tooling and best practices
-- **🎨 Beautiful UI** - Complete shadcn/ui component library with advanced interactions
-- **🔒 Type Safety** - Full TypeScript configuration with Zod validation
-- **📱 Responsive** - Mobile-first design principles with smooth animations
-- **🗄️ Database Ready** - Prisma ORM configured for rapid backend development
-- **🔐 Auth Included** - NextAuth.js for secure authentication flows
-- **📊 Data Visualization** - Charts, tables, and drag-and-drop functionality
-- **🌍 i18n Ready** - Multi-language support with Next Intl
-- **🚀 Production Ready** - Optimized build and deployment settings
-- **🤖 AI-Friendly** - Structured codebase perfect for AI assistance
+### **Database**
+- **10+ models** with proper relationships
+- **Normalized schema** with integrity constraints
+- **Enum types** for status and categories
+- **Performance indexing**
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
+### **Prerequisites**
+- Node.js 18+ and npm/yarn/bun
+- Git
+
+### **Installation**
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/jitenkr2030/RailClean-QR-System.git
+   cd RailClean-QR-System
+   ```
+
+2. **Install dependencies**
+   ```bash
+   bun install
+   # or
+   npm install
+   ```
+
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+
+4. **Set up the database**
+   ```bash
+   bun run db:push
+   ```
+
+5. **Start the development server**
+   ```bash
+   bun run dev
+   ```
+
+6. **Open your browser**
+   Navigate to `http://localhost:3000`
+
+## 📱 User Interfaces
+
+### **1. Main Dashboard** (`/`)
+- Overview of all three modules
+- Real-time statistics
+- Quick access to all features
+- Recent activity feed
+
+### **2. Passenger Complaint** (`/complaint`)
+- Mobile-optimized interface
+- No login required
+- 3-step reporting process
+- Photo upload support
+- Instant confirmation
+
+### **3. Staff Portal** (`/staff`)
+- Task management dashboard
+- Real-time notifications
+- Before/after photo upload
+- Work notes and location tracking
+- Performance metrics
+
+### **4. Admin Dashboard** (`/admin`)
+- Comprehensive analytics
+- Multi-tab interface
+- SLA monitoring
+- Staff performance tracking
+- Report generation
+
+## 🔧 API Endpoints
+
+### **QR Code Management**
+- `POST /api/qr/generate` - Generate QR codes
+- `GET /api/qr/generate?type={type}` - Fetch QR data
+
+### **Complaint Management**
+- `POST /api/complaints` - Create new complaint
+- `GET /api/complaints` - List complaints with filters
+
+### **Task Management**
+- `POST /api/tasks` - Create/assign tasks
+- `PUT /api/tasks/{id}` - Update task status
+- `GET /api/tasks` - List staff tasks
+
+## 📊 Database Schema
+
+### **Core Models**
+- **User** - Staff and admin management
+- **Complaint** - Issue tracking with SLA
+- **Task** - Work assignment and completion
+- **Train/Coach** - Train and coach information
+- **Station/Platform** - Station and platform data
+- **FoodItem** - Food catalog and quality tracking
+
+### **Key Features**
+- **SLA tracking** with automatic deadlines
+- **Severity levels** (Low, Medium, High, Critical)
+- **Status workflow** (Pending → In Progress → Completed)
+- **Photo evidence** with cloud storage
+- **Repeat issue detection**
+
+## 💰 Pricing Model
+
+| Package | Price | Features |
+|---------|-------|----------|
+| **1 Train (10-20 coaches)** | ₹999/month | Basic monitoring, staff portal |
+| **Large Train** | ₹1,999/month | Advanced analytics, priority support |
+| **Station Platform** | ₹999/month | Platform monitoring only |
+| **Combo (Train + Platform + Food)** | ₹2,999/month | Complete solution with all features |
+
+## 🎯 Target Customers
+
+1. **Cleaning Contractors** - Easy entry point with coach/platform monitoring
+2. **Pantry Contractors** - Food quality tracking and ratings
+3. **Private Station Operators** - Complete station management
+4. **Railway Officials** - Comprehensive oversight and compliance
+
+## 📈 Business Value
+
+### **For Railway Authorities**
+- **Improved cleanliness scores** through real-time monitoring
+- **Data-driven decisions** with comprehensive analytics
+- **Reduced complaint resolution time** (target: 30 minutes)
+- **Enhanced passenger satisfaction**
+
+### **For Contractors**
+- **Performance tracking** and accountability
+- **Automated reporting** for compliance
+- **Efficient resource allocation**
+- **Competitive advantage** with transparency
+
+### **For Passengers**
+- **Quick and easy** issue reporting (10 seconds)
+- **Real-time status** updates
+- **Anonymous feedback** option
+- **Visible improvements** in services
+
+## 🔒 Security Features
+
+- **Role-based access control** (Admin, Staff, Manager)
+- **Data encryption** for sensitive information
+- **Audit logging** for all actions
+- **Secure file uploads** with validation
+- **API rate limiting** and protection
+
+## 🚀 Deployment
+
+### **Development**
 ```bash
-# Install dependencies
-bun install
-
-# Start development server
 bun run dev
+```
 
-# Build for production
+### **Production Build**
+```bash
 bun run build
-
-# Start production server
-bun start
+bun run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see your application running.
-
-## 🤖 Powered by Z.ai
-
-This scaffold is optimized for use with [Z.ai](https://chat.z.ai) - your AI assistant for:
-
-- **💻 Code Generation** - Generate components, pages, and features instantly
-- **🎨 UI Development** - Create beautiful interfaces with AI assistance  
-- **🔧 Bug Fixing** - Identify and resolve issues with intelligent suggestions
-- **📝 Documentation** - Auto-generate comprehensive documentation
-- **🚀 Optimization** - Performance improvements and best practices
-
-Ready to build something amazing? Start chatting with Z.ai at [chat.z.ai](https://chat.z.ai) and experience the future of AI-powered development!
-
-## 📁 Project Structure
-
-```
-src/
-├── app/                 # Next.js App Router pages
-├── components/          # Reusable React components
-│   └── ui/             # shadcn/ui components
-├── hooks/              # Custom React hooks
-└── lib/                # Utility functions and configurations
+### **Environment Variables**
+```env
+DATABASE_URL="file:./dev.db"
+NEXTAUTH_SECRET="your-secret-key"
+NEXTAUTH_URL="http://localhost:3000"
 ```
 
-## 🎨 Available Features & Components
+## 📱 Mobile Support
 
-This scaffold includes a comprehensive set of modern web development tools:
+- **Responsive design** works on all devices
+- **Touch-optimized** interfaces for field staff
+- **Progressive Web App** (PWA) capabilities
+- **Offline support** for critical features
 
-### 🧩 UI Components (shadcn/ui)
-- **Layout**: Card, Separator, Aspect Ratio, Resizable Panels
-- **Forms**: Input, Textarea, Select, Checkbox, Radio Group, Switch
-- **Feedback**: Alert, Toast (Sonner), Progress, Skeleton
-- **Navigation**: Breadcrumb, Menubar, Navigation Menu, Pagination
-- **Overlay**: Dialog, Sheet, Popover, Tooltip, Hover Card
-- **Data Display**: Badge, Avatar, Calendar
+## 🔧 Configuration
 
-### 📊 Advanced Data Features
-- **Tables**: Powerful data tables with sorting, filtering, pagination (TanStack Table)
-- **Charts**: Beautiful visualizations with Recharts
-- **Forms**: Type-safe forms with React Hook Form + Zod validation
+### **SLA Settings**
+- Default resolution time: 30 minutes
+- Escalation levels: 3 tiers
+- Priority scoring algorithm
+- Auto-assignment rules
 
-### 🎨 Interactive Features
-- **Animations**: Smooth micro-interactions with Framer Motion
-- **Drag & Drop**: Modern drag-and-drop functionality with DND Kit
-- **Theme Switching**: Built-in dark/light mode support
+### **Notification Settings**
+- Real-time staff alerts
+- Email notifications for admins
+- SMS alerts for critical issues
+- Dashboard notifications
 
-### 🔐 Backend Integration
-- **Authentication**: Ready-to-use auth flows with NextAuth.js
-- **Database**: Type-safe database operations with Prisma
-- **API Client**: HTTP requests with Fetch + TanStack Query
-- **State Management**: Simple and scalable with Zustand
+## 📊 Reports Available
 
-### 🌍 Production Features
-- **Internationalization**: Multi-language support with Next Intl
-- **Image Optimization**: Automatic image processing with Sharp
-- **Type Safety**: End-to-end TypeScript with Zod validation
-- **Essential Hooks**: 100+ useful React hooks with ReactUse for common patterns
+1. **Daily Reports** - Complete daily overview
+2. **Train Performance** - Train-wise cleanliness data
+3. **Station Reports** - Platform cleanliness metrics
+4. **Staff Analytics** - Team performance insights
+5. **SLA Compliance** - Service level agreement reports
+6. **Customer Feedback** - Satisfaction and ratings
 
-## 🤝 Get Started with Z.ai
+## 🤝 Contributing
 
-1. **Clone this scaffold** to jumpstart your project
-2. **Visit [chat.z.ai](https://chat.z.ai)** to access your AI coding assistant
-3. **Start building** with intelligent code generation and assistance
-4. **Deploy with confidence** using the production-ready setup
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📞 Support
+
+For support and inquiries:
+- **Email**: support@railclean.com
+- **Phone**: +91-XXXXXXXXXX
+- **Documentation**: [Wiki](https://github.com/jitenkr2030/RailClean-QR-System/wiki)
+
+## 🗺️ Roadmap
+
+### **Phase 1** (Current)
+- ✅ Basic complaint system
+- ✅ Staff task management
+- ✅ Admin dashboard
+- ✅ QR code generation
+
+### **Phase 2** (Next)
+- 🔄 WebSocket real-time notifications
+- 🔄 Advanced automation and SLA
+- 🔄 Comprehensive reporting
+- 🔄 Mobile app development
+
+### **Phase 3** (Future)
+- 📋 AI-powered issue classification
+- 📋 Predictive analytics
+- 📋 Integration with railway systems
+- 📋 Multi-language support
 
 ---
 
-Built with ❤️ for the developer community. Supercharged by [Z.ai](https://chat.z.ai) 🚀
+## 🎉 Ready to Transform Indian Railways?
+
+The RailClean QR System is **production-ready** and can be deployed immediately to start improving cleanliness and passenger satisfaction across Indian Railways.
+
+**Get started today** and join the revolution in railway hygiene monitoring! 🚆✨

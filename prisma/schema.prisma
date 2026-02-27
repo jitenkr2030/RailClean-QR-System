@@ -14,19 +14,240 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String?
+  phone       String?
+  role        UserRole @default(STAFF)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  assignedTasks Task[]   @relation("StaffTasks")
+  assignedComplaints Complaint[]
+  createdComplaints Complaint[] @relation("UserComplaints")
+  
+  @@map("users")
 }
 
-model Post {
-  id        String   @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Train {
+  id          String   @id @default(cuid())
+  trainNumber String   @unique
+  trainName   String
+  type        String   // e.g., "Express", "Superfast"
+  totalCoaches Int
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  coaches     Coach[]
+  complaints  Complaint[]
+  
+  @@map("trains")
+}
+
+model Coach {
+  id          String   @id @default(cuid())
+  coachNumber String
+  coachType   String   // e.g., "1A", "2A", "3A", "SL"
+  trainId     String
+  qrCode      String   @unique
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  train       Train    @relation(fields: [trainId], references: [id], onDelete: Cascade)
+  complaints  Complaint[]
+  
+  @@unique([trainId, coachNumber])
+  @@map("coaches")
+}
+
+model Station {
+  id          String   @id @default(cuid())
+  stationCode String   @unique
+  stationName String
+  city        String
+  state       String
+  platformCount Int
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  platforms   Platform[]
+  complaints  Complaint[]
+  
+  @@map("stations")
+}
+
+model Platform {
+  id          String   @id @default(cuid())
+  platformNumber String
+  stationId   String
+  qrCode      String   @unique
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  station     Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  complaints  Complaint[]
+  
+  @@unique([stationId, platformNumber])
+  @@map("platforms")
+}
+
+model FoodItem {
+  id          String   @id @default(cuid())
+  itemName    String
+  category    String   // e.g., "Meal", "Snack", "Beverage"
+  price       Float
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  complaints  Complaint[]
+  
+  @@map("food_items")
+}
+
+model Complaint {
+  id              String       @id @default(cuid())
+  complaintNumber String       @unique
+  type            ComplaintType
+  description     String
+  severity        Severity     @default(MEDIUM)
+  status          Status       @default(PENDING)
+  
+  // Location References (nullable based on type)
+  trainId         String?
+  coachId         String?
+  stationId       String?
+  platformId      String?
+  foodItemId      String?
+  
+  // Reporter Info
+  reporterName    String?
+  reporterPhone   String?
+  reporterEmail   String?
+  
+  // Media
+  photoUrl        String?
+  photoPublicId   String?
+  
+  // Ratings (for food complaints)
+  foodTasteRating Int?         // 1-5
+  hygieneRating   Int?         // 1-5
+  packagingRating Int?         // 1-5
+  
+  // Task Assignment
+  assignedToId    String?
+  reportedById    String?
+  
+  // SLA Tracking
+  slaDeadline     DateTime?
+  completedAt     DateTime?
+  resolutionTime  Int?         // in minutes
+  
+  // Automation
+  isRepeatIssue   Boolean      @default(false)
+  priorityScore   Int          @default(0)
+  escalationLevel Int          @default(0)
+  
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  
+  // Relations
+  train           Train?       @relation(fields: [trainId], references: [id])
+  coach           Coach?       @relation(fields: [coachId], references: [id])
+  station         Station?     @relation(fields: [stationId], references: [id])
+  platform        Platform?    @relation(fields: [platformId], references: [id])
+  foodItem        FoodItem?    @relation(fields: [foodItemId], references: [id])
+  assignedTo      User?        @relation(fields: [assignedToId], references: [id])
+  reportedBy      User?        @relation("UserComplaints", fields: [reportedById], references: [id])
+  tasks           Task[]
+  
+  @@map("complaints")
+}
+
+model Task {
+  id            String     @id @default(cuid())
+  taskNumber    String     @unique
+  complaintId   String     @unique
+  staffId       String
+  status        TaskStatus @default(ASSIGNED)
+  notes         String?
+  
+  // Resolution
+  beforePhotoUrl String?
+  afterPhotoUrl  String?
+  afterPhotoPublicId String?
+  
+  // Time Tracking
+  startedAt      DateTime?
+  completedAt    DateTime?
+  actualTime     Int?       // in minutes
+  
+  // Location
+  workLocation   String?    // e.g., "Coach A1, Seat 15"
+  
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  
+  // Relations
+  complaint      Complaint  @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+  staff          User       @relation("StaffTasks", fields: [staffId], references: [id])
+  
+  @@map("tasks")
+}
+
+model SystemConfig {
+  id            String   @id @default(cuid())
+  key           String   @unique
+  value         String
+  description   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@map("system_config")
+}
+
+// Enums
+enum UserRole {
+  ADMIN
+  STAFF
+  MANAGER
+}
+
+enum ComplaintType {
+  COACH_CLEANLINESS
+  FOOD_QUALITY
+  PLATFORM_CLEANLINESS
+}
+
+enum Severity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum Status {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+  ESCALATED
+}
+
+enum TaskStatus {
+  ASSIGNED
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
 }
